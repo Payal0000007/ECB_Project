@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { Users } from 'src/schemas/user.schema';
 import { SignUpDto } from 'src/dto/signup.dto';
@@ -14,6 +14,11 @@ export class UsersController {
     @Get()
     async getAllUsers(): Promise<Users[]> {
         return this.userService.findAll();
+    }
+
+    @Get(':id')
+    async findById(@Param('id') id: string) {
+        return this.userService.findById(id);
     }
 
     @Post('/signup')

@@ -5,6 +5,7 @@ import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ScheduleModule } from '@nestjs/schedule';
+import { WalletModule } from './wallet/wallet.module';
 
 @Module({
    imports:[ConfigModule.forRoot({
@@ -12,7 +13,8 @@ import { ScheduleModule } from '@nestjs/schedule';
     isGlobal:true,
    }),
    MongooseModule.forRoot(process.env.DB_URL),
-   UsersModule
+   UsersModule,
+   WalletModule
   ],
   controllers: [AppController],
   providers: [AppService],

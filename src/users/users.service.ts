@@ -21,7 +21,7 @@ export class UsersService {
         private userModel: mongoose.Model<Users>,
         private jwtservice: JwtService
     ){ 
-        this.twilioClient = new Twilio(process.env.Account_SID, process.env.Auth_Token);
+        this.twilioClient = new Twilio("ACa1ae693469610944db9388135b7dd9df", "0660e1ef852dc0af9618fd81cda14986");
         this.setupUserCleanupTask(); 
     }
 
@@ -39,6 +39,16 @@ export class UsersService {
         return users;
     }
 
+    async findById(id: string): Promise<Users | null> {
+        try {
+            const user = await this.userModel.findById(id);
+            return user;
+        } catch (error) {
+            throw new BadRequestException('Invalid user ID');
+        }
+    }
+    
+
     async signUp(signUpDto: SignUpDto): Promise<Users> {
         const { fullname, email, dob, gender, phoneNumber, password } = signUpDto;
         const requiredFields = {
@@ -47,7 +57,7 @@ export class UsersService {
             dob: 'Date of birth',
             gender: 'gender',
             phoneNumber: 'Phone number',
-            password: 'Password',
+            password: 'Password',          
             
         };
         for (const [field, label] of Object.entries(requiredFields)) {
@@ -80,7 +90,6 @@ export class UsersService {
             gender,
             phoneNumber: formattedPhoneNumber,
             password: hashedPassword,
-            confirmpassword: hashedPassword,
             otp 
         });
         return user;
