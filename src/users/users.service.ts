@@ -21,7 +21,7 @@ export class UsersService {
         private userModel: mongoose.Model<Users>,
         private jwtservice: JwtService
     ){ 
-        this.twilioClient = new Twilio(process.env.Account_SID, process.env.Auth_Token);
+        // this.twilioClient = new Twilio(process.env.Account_SID, process.env.Auth_Token);
         this.setupUserCleanupTask(); 
     }
 
