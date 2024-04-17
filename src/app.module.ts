@@ -14,8 +14,6 @@ import { ScheduleModule } from '@nestjs/schedule';
    MongooseModule.forRoot(process.env.DB_URL),
    UsersModule
   ],
-  
- 
   controllers: [AppController],
   providers: [AppService],
 })
