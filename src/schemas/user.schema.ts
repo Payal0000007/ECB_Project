@@ -41,7 +41,7 @@ export class Users extends Document {
   }) 
     password:string;
 
-    @Prop({required:true})
+    @Prop()
     @IsNotEmpty()
     @MinLength(8) 
     @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, {

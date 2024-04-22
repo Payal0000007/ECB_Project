@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ScheduleModule } from '@nestjs/schedule';
 import { WalletModule } from './wallet/wallet.module';
+import { VerifyTokenModule } from './verify-token/verify-token.module';
 
 @Module({
    imports:[ConfigModule.forRoot({
@@ -14,7 +15,8 @@ import { WalletModule } from './wallet/wallet.module';
    }),
    MongooseModule.forRoot(process.env.DB_URL),
    UsersModule,
-   WalletModule
+   WalletModule,
+   VerifyTokenModule
   ],
   controllers: [AppController],
   providers: [AppService],

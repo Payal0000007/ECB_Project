@@ -7,12 +7,13 @@ import mongoose from 'mongoose';
 export class WalletService {
     constructor(
           @InjectModel(Wallet.name)
-          private walletModel:mongoose.Model<Wallet>
+          private walletModel:mongoose.Model<Wallet>,
+          
     ){}
 
     async findById(id: string): Promise<Wallet> {
         try {
-            const wallet = await this.walletModel.findOne({userId:id}) ;
+            const wallet = await this.walletModel.findOne({userId:id});
             console.log(wallet);
             
             return wallet;
@@ -20,6 +21,7 @@ export class WalletService {
             throw new NotFoundException('Wallet not found');
         }
     } 
+    
 
     // async create(wallet: Wallet): Promise<Wallet> {
     //     try {
@@ -64,6 +66,19 @@ export class WalletService {
             }
         } catch (err) {
             console.log(err);
+        }
+    }
+
+    async delete(id: string): Promise<boolean> {
+        try {
+            const deletedWallet = await this.walletModel.findByIdAndDelete(id);
+            if (!deletedWallet) {
+                throw new NotFoundException('Wallet not found');
+            }
+            return true;
+        } catch (err) {
+            console.log(err);
+            throw new Error('Error deleting wallet');
         }
     }
 }

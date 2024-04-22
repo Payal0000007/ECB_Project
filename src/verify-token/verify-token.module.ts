@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
-import { WalletService } from './wallet.service';
-import { WalletController } from './wallet.controller';
-import { MongooseModule } from '@nestjs/mongoose';
-import { Wallet, walletSchemam } from 'src/schemas/wallet.schema';
-import { VerifyTokenService } from 'src/verify-token/verify-token.service';
+import { VerifyTokenService } from './verify-token.service';
+import { VerifyTokenController } from './verify-token.controller';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+
+
 
 @Module({
   imports:[
@@ -22,10 +21,8 @@ import { ConfigService } from '@nestjs/config';
         };
       },
     }),
-    MongooseModule.forFeature([{name:Wallet.name,schema:walletSchemam}])
   ],
-  
-  providers: [WalletService,VerifyTokenService],
-  controllers: [WalletController]
+  providers:[VerifyTokenService],
+  controllers: [VerifyTokenController]
 })
-export class WalletModule {}
+export class VerifyTokenModule {}

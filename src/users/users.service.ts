@@ -21,7 +21,7 @@ export class UsersService {
         private userModel: mongoose.Model<Users>,
         private jwtservice: JwtService
     ){ 
-        this.twilioClient = new Twilio("ACa1ae693469610944db9388135b7dd9df", "0660e1ef852dc0af9618fd81cda14986");
+        this.twilioClient = new Twilio("ACa1ae693469610944db9388135b7dd9df", "9a64af0be465fb5e02bb45abab04e838");
         this.setupUserCleanupTask(); 
     }
 
@@ -73,11 +73,12 @@ export class UsersService {
         const hashedPassword = await bcrypt.hash(password, 10);
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
         const formattedPhoneNumber = this.formatPhoneNumber(phoneNumber);
+        console.log(formattedPhoneNumber)
         try {
-            await this.twilioClient.messages.create({
-                body: `Your OTP for verification is: ${otp}`,
+            const twilio=  await this.twilioClient.messages.create({
                 from: '+12515721257', 
-                to: formattedPhoneNumber
+                body: `Your OTP for verification is: ${otp}`,
+                to: "+91 7018362859"
             });
         } catch (error) {
             this.logger.error(`Error sending OTP: ${error.message}`);
@@ -123,8 +124,8 @@ export class UsersService {
         if (!isPasswordMatched) {
             throw new UnauthorizedException('Invalid email or password');
         }
-        const token = this.jwtservice.sign({ id: user._id });
-        return { token };
+        const token = this.jwtservice.sign({ id: user._id,fullname:user.fullname });
+        return { token,fullname:user.fullname };
     }
 
     async generateResetToken(phoneNumber: string): Promise<string> {
@@ -206,5 +207,14 @@ export class UsersService {
                 console.error('Error occurred during user deletion:', error);
             }
         });
+    }
+
+    async deleteUser(userId: string): Promise<void> {
+        try {
+            await this.userModel.findByIdAndDelete(userId);
+            console.log(`Deleted user with ID: ${userId}`);
+        } catch (error) {
+            throw new Error('Failed to delete user');
+        }
     }
 }

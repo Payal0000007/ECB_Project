@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { Users } from 'src/schemas/user.schema';
 import { SignUpDto } from 'src/dto/signup.dto';
@@ -44,7 +44,7 @@ async requestPasswordReset(@Body('phoneNumber') phoneNumber: string) {
     const resetToken = await this.userService.generateResetToken(phoneNumber);
     await this.userService.sendResetOTP(phoneNumber, resetToken, );
     return { message: 'Reset OTP sent successfully' };
-}
+}   
 
 @Post('reset-password/verify')
 async verifyResetOTP(@Body() resetDto: VerifyResetDto) {
@@ -61,6 +61,12 @@ async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
     const { phoneNumber, newPassword } = resetPasswordDto;
     await this.userService.resetPassword(phoneNumber, newPassword);
     return { message: 'Password reset successful' };
+}
+
+
+@Delete(':id')
+async deleteUser(@Param('id') userId: string): Promise<void> {
+    await this.userService.deleteUser(userId);
 }
 
 }
