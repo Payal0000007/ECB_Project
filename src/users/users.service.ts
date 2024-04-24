@@ -21,7 +21,7 @@ export class UsersService {
         private userModel: mongoose.Model<Users>,
         private jwtservice: JwtService
     ){ 
-        this.twilioClient = new Twilio("ACa1ae693469610944db9388135b7dd9df", "611c750d576d1df3ef1431e72de9f640");
+        this.twilioClient = new Twilio("ACa1ae693469610944db9388135b7dd9df", "2d1b099b6890ad8d8627efe981b700e8");
         this.setupUserCleanupTask(); 
     }
 
@@ -78,7 +78,7 @@ export class UsersService {
             const twilio=  await this.twilioClient.messages.create({
                 from: '+12515721257', 
                 body: `Your OTP for verification is: ${otp}`,
-                to: "+91 7018362859"
+                to: formattedPhoneNumber
             });
         } catch (error) {
             this.logger.error(`Error sending OTP: ${error.message}`);
