@@ -2,9 +2,11 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Wallet } from 'src/schemas/wallet.schema';
 import mongoose from 'mongoose';
+import Stripe from 'stripe';
 
 @Injectable()
 export class WalletService {
+    private readonly stripe: Stripe;
     constructor(
           @InjectModel(Wallet.name)
           private walletModel:mongoose.Model<Wallet>,

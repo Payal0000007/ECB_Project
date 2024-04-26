@@ -18,8 +18,6 @@ export class Users extends Document {
     fullname: string;
 
     @Prop({ required: true, unique: true , lowercase:true })
-    @IsNotEmpty()
-    @IsEmail()
     email: string;
 
     @Prop({required:true,enum: Gender})
