@@ -13,7 +13,12 @@ async function bootstrap() {
   
   app.enableCors({
     origin:"*",
-    methods:['GET','PUT','POST','DELETE','PATCH']
+    methods:['GET','PUT','POST','DELETE','PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+        preflightContinue: false,
+        optionsSuccessStatus: 200,
+        credentials: true,
+        maxAge: 3600,
   })
   await app.listen(8000);
 }
