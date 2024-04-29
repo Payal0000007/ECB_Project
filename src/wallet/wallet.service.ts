@@ -10,8 +10,20 @@ export class WalletService {
     constructor(
           @InjectModel(Wallet.name)
           private walletModel:mongoose.Model<Wallet>,
-          
-    ){}
+                  
+    ){
+        this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+            // apiVersion: '2024-04-10',
+        });
+    }
+    async createPaymentIntent(amount: number) {
+        const paymentIntent = await this.stripe.paymentIntents.create({
+          amount: amount * 100, 
+          currency: 'usd',
+         
+        });
+        return paymentIntent;
+      }
 
     async findById(id: string): Promise<Wallet> {
         try {
@@ -24,30 +36,7 @@ export class WalletService {
         }
     } 
     
-
-    // async create(wallet: Wallet): Promise<Wallet> {
-    //     try {
-    //         const existingWallet = await this.walletModel.findOne({ userId: wallet.userId });
-            
-    //         if (existingWallet) {
-    //             const availableFunds = existingWallet.availableFunds + Number(wallet.amount);
-
-    //             const updatedWallet = await this.walletModel.findByIdAndUpdate(
-    //                 { _id: existingWallet._id },
-    //                 { $set: { availableFunds: availableFunds }, $push: { history: { amount: Number(wallet.amount) } } },
-    //                 { new: true } 
-    //             );
-    //             return updatedWallet;
-    //         } else {
-    //             const newWallet = await this.walletModel.create({ ...wallet, history: [{ amount: Number(wallet.amount) }], availableFunds: Number(wallet.amount) });
-    //             return newWallet;
-    //         }
-    //     } catch (err) {
-    //         console.log(err);
-    //     }
-    // }
-
-    async create(wallet: Wallet): Promise<Wallet> {
+        async create(wallet: Wallet): Promise<Wallet> {
         try {
             const existingWallet = await this.walletModel.findOne({ userId: wallet.userId });
             

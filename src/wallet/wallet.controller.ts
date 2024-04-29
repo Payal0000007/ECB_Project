@@ -48,4 +48,11 @@ export class WalletController {
             throw new InternalServerErrorException('Error deleting wallet');
         }
     }
+    @Post('add-funds')
+    async addFunds(@Body() data: { amount: number }) {
+      const { amount } = data;
+      // Create a PaymentIntent with Stripe
+      const paymentIntent = await this.WalletService.createPaymentIntent(amount);
+      return { clientSecret: paymentIntent.client_secret };
+    }
 }
